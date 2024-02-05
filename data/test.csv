@@ -1,0 +1,12 @@
+all_course_codes,course_code,credits,course_id,professor_names,times_by_day,title
+['ECON 115'],ECON 115,1,98156,['Steven Berry'],"{'Monday': [['13:00', '14:15', 'WLH 201 - William L. Harkness Hall 201', 'https://map.yale.edu/?id=1910#!m/560127']], 'Wednesday': [['13:00', '14:15', 'WLH 201 - William L. Harkness Hall 201', 'https://map.yale.edu/?id=1910#!m/560127']]}",Introductory Microeconomics
+['ECON 115'],ECON 115,0,98157,[],"{'Wednesday': [['16:00', '16:50', 'WLH 202 - William L. Harkness Hall 202', 'https://map.yale.edu/?id=1910#!m/560127']]}",Introductory Microeconomics
+['ECON 115'],ECON 115,0,98158,[],"{'Wednesday': [['17:00', '17:50', 'WLH 202 - William L. Harkness Hall 202', 'https://map.yale.edu/?id=1910#!m/560127']]}",Introductory Microeconomics
+['ECON 115'],ECON 115,0,98159,[],"{'Wednesday': [['16:00', '16:50', 'WLH 203 - William L. Harkness Hall 203', 'https://map.yale.edu/?id=1910#!m/560127']]}",Introductory Microeconomics
+['ECON 115'],ECON 115,0,98160,[],"{'Wednesday': [['17:00', '17:50', 'WLH 203 - William L. Harkness Hall 203', 'https://map.yale.edu/?id=1910#!m/560127']]}",Introductory Microeconomics
+['ECON 115'],ECON 115,0,98161,[],"{'Wednesday': [['19:00', '19:50', 'WLH 203 - William L. Harkness Hall 203', 'https://map.yale.edu/?id=1910#!m/560127']]}",Introductory Microeconomics
+['ECON 115'],ECON 115,0,98162,[],"{'Wednesday': [['20:00', '20:50', 'WLH 203 - William L. Harkness Hall 203', 'https://map.yale.edu/?id=1910#!m/560127']]}",Introductory Microeconomics
+['ECON 115'],ECON 115,0,98163,[],"{'Thursday': [['19:00', '19:50', 'WLH 202 - William L. Harkness Hall 202', 'https://map.yale.edu/?id=1910#!m/560127']]}",Introductory Microeconomics
+['ECON 115'],ECON 115,0,98164,[],"{'Thursday': [['20:00', '20:50', 'WLH 202 - William L. Harkness Hall 202', 'https://map.yale.edu/?id=1910#!m/560127']]}",Introductory Microeconomics
+['ECON 115'],ECON 115,0,98165,[],"{'Friday': [['10:30', '11:20', 'HQ 309 - Humanities Quadrangle 309', 'https://map.yale.edu/?id=1910#!m/563690']]}",Introductory Microeconomics
+['ECON 115'],ECON 115,0,98166,[],"{'Friday': [['11:35', '12:25', 'HQ 309 - Humanities Quadrangle 309', 'https://map.yale.edu/?id=1910#!m/563690']]}",Introductory Microeconomics
