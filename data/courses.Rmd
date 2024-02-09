@@ -1,0 +1,194 @@
+---
+title: "CourseTable Data"
+author: "Alexander Abinader"
+date: "2024-02-09"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+First we'll read in the data and just check the column names and dimensions to see if our CSV was written properly.
+
+```{r}
+
+courses_raw <- read.csv("courses_raw.csv")
+dim(courses_raw)
+names(courses_raw)
+
+```
+
+Now we'll do a quick check to make sure the query successfully only captured courses worth 1 credit.
+
+```{r}
+
+# Should be the same since the json query already had this condition
+courses_raw <- courses_raw[courses_raw$credits == 1.0, ]
+dim(courses_raw)
+
+```
+
+We have a fair amount of data, so we'll remove any courses with NULL information as well as any course that doesn't
+satisfy at least one distributional area or skill requirement.
+
+```{r}
+
+# Remove any courses with NULL values
+courses_raw <- courses_raw[complete.cases(courses_raw), ]
+dim(courses_raw)
+
+# Remove any courses without a distribution skill OR area
+courses_raw <- courses_raw[!(courses_raw$areas == "[]" & courses_raw$skills == "[]"), ]
+dim(courses_raw)
+
+```
+
+The code below is for removing duplicates. If a course is cross listed across several departments, CourseTable will
+display all of them as the their own row. The code below extracts just the first of these course codes and keeps that
+as the only version of that course in the dataset.
+
+```{r}
+
+# Go row by row to remove duplicate course codes, only keeping the first code
+courses_raw$code_check <- NA
+for (i in 1:nrow(courses_raw)) {
+    matches <- regexpr("(?<=')[^']+", courses_raw$all_course_codes[i], perl = TRUE)
+    courses_raw$code_check[i] <- regmatches(courses_raw$all_course_codes[i], matches)
+}
+courses_raw <- courses_raw[courses_raw$course_code == courses_raw$code_check, ]
+courses_clean <- courses_raw[ ,-ncol(courses_raw)]
+
+```
+
+```{r}
+
+# Drop columns that are no longer necessary
+courses_clean <- subset(courses_clean, select = -c(all_course_codes, credits, school)
+)
+
+```
+
+I wasn't sure how to uniquely identify courses before. I tried querying GraphQL with the course title (e.g. ECON 115) but
+that actually didn't work. I have a course number (crn) and course id. Below, I did a quick check to see if the number of
+unique values matches the number of courses in our dataset. It seems that they would both work for querying the reviews!
+
+```{r}
+
+# Check the number of unique course numbers and course ids to know if they can be used for querying the reviews
+length(unique(courses_clean$crn))
+length(unique(courses_clean$course_id))
+dim(courses_clean)
+
+```
+
+Now we can do some more traditional data cleaning. For potential analysis later in the project, we'll group the classes
+into one of three categories: STEM, Humanities, and Social Sciences. This may prove useful for analyzing differences in
+how students from different types of classes write their reviews.
+
+For simplicity, we'll remove the language classes (L1, L2, etc.) and any classes that are dual listed for a skill. There
+are only a few of these so they won't affect the results much but will make the cleaning and process easier.
+
+```{r}
+
+# Remove rows that have multiple skills or have a language skill
+courses_clean <- courses_clean[nchar(courses_clean$areas) < 8, ]
+courses_clean <- courses_clean[nchar(courses_clean$skills) < 8, ]
+courses_clean <- courses_clean[courses_clean$skills != "['L1']", ]
+courses_clean <- courses_clean[courses_clean$skills != "['L2']", ]
+courses_clean <- courses_clean[courses_clean$skills != "['L3']", ]
+courses_clean <- courses_clean[courses_clean$skills != "['L4']", ]
+courses_clean <- courses_clean[courses_clean$skills != "['L5']", ]
+
+# Relabel all the areas for readability
+for (i in 1:nrow(courses_clean)) {
+    clean_str <- gsub("\\[|\\]|'", "", courses_clean$areas[i])
+    if (courses_clean$areas[i] != "[]") {
+      courses_clean$areas[i] <- clean_str
+    }
+    else {
+      courses_clean$areas[i] <- NA
+    }
+}
+
+# Relabel all the skills for readability
+for (i in 1:nrow(courses_clean)) {
+    clean_str <- gsub("\\[|\\]|'", "", courses_clean$skills[i])
+    if (courses_clean$skills[i] != "[]") {
+      courses_clean$skills[i] <- clean_str
+    }
+    else {
+      courses_clean$skills[i] <- NA
+    }
+}
+
+# Combine areas and skills into a new column
+courses_clean$area_skill <- paste(courses_clean$areas, courses_clean$skills, sep = "/")
+print(unique(courses_clean$area_skill))
+
+```
+
+Great. We now have a new column with a skill and area concatenated together (e.g. So/QR). These can be
+grouped into the broader categories mentioned above.
+
+```{r}
+
+# Remove weird skill/area combo
+courses_clean <- courses_clean[courses_clean$area_skill != "Sc/WR", ]
+
+# Provide group labels for future analysis
+courses_clean$area <- NA
+for (i in 1:nrow(courses_clean)) {
+    code <- courses_clean$area_skill[i]
+    if ((code == "Hu/NA") || (code == "NA/WR") || (code == "Hu/WR")) {
+      courses_clean$area[i] <- "Humanities"
+    }
+    else if ((code == "Sc/NA") || (code == "NA/QR") || (code == "Sc/QR")) {
+      courses_clean$area[i] <- "STEM"
+    }
+    else {
+      courses_clean$area[i] <- "Social"
+    }
+}
+
+# Drop columns that are no longer necessary
+courses_clean <- subset(courses_clean, select = -c(area_skill, areas, skills))
+
+```
+
+Now we'll do some basic data cleaning such as checking our variable types, rounding, etc.
+
+```{r}
+
+# Check data frame structure
+str(courses_clean)
+head(courses_clean$professor_names, 20)
+
+```
+
+Everything appears fine. Let's clean up the professor names a little bit and round the ratings to three decimals.
+
+```{r}
+
+# Clean professor names
+courses_clean$professor_names <- sapply(courses_clean$professor_names, function(x) {
+  x <- gsub("\\[|\\]|'|\"", "", x)
+})
+
+# Round ratings to three decimals
+courses_clean$average_rating <- round(courses_clean$average_rating, 3)
+courses_clean$average_professor <- round(courses_clean$average_professor, 3)
+courses_clean$average_workload <- round(courses_clean$average_workload, 3)
+courses_clean$average_rating_same_professors <- round(courses_clean$average_rating_same_professors, 3)
+courses_clean$average_workload_same_professors <- round(courses_clean$average_workload_same_professors, 3)
+
+```
+
+Great. This dataset is now cleaned and ready for potential future analysis. The important product of this file is that I now
+have a set of unique course ids and course numbers that I can use to query the GraphQL endpoint for reviews. I can also use
+these unique identifiers in order to automate the review collection and integration process.
+
+
+
