@@ -190,5 +190,15 @@ Great. This dataset is now cleaned and ready for potential future analysis. The 
 have a set of unique course ids and course numbers that I can use to query the GraphQL endpoint for reviews. I can also use
 these unique identifiers in order to automate the review collection and integration process.
 
+```{r}
+
+course_ids <- unique(courses_clean$course_id)
+course_numbers <- unique(courses_clean$crn)
+
+# Write these to a CSV file for my python script to access
+write.csv(course_ids, 'course_ids.csv', row.names = FALSE)
+write.csv(course_numbers, 'course_numbers.csv', row.names = FALSE)
+
+```
 
 
