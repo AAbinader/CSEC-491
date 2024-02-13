@@ -17,3 +17,5 @@ I identified earlier. I was able to make the script dynamic so that it reads in 
 a couple of tweaks, I was able to pull the skills responses and strengths/weaknesses responses. Each of these categories had 4000+ replies
 which is certainly plenty to start our analysis with. My next step will be to read just the review responses into R to do some basic analysis
 and then follow that up with some python sentiment analysis. I currently have each response stored on its own row with the corresponding course id. For example, a course with a 100 replies has 100 rows that belong to it.
+
+**2/12/24**: I didn't quite complete everything I wanted to. On the bright side, I identified three popular preexisting sentiment analysis models that I will test before moving to models trained from scratch. I was able to implement one of them (VADER) and took a brief look at the results. It was fairly simple to code and actually works surprisingly well. I started working on the roBERTa model which is more complex but should yield better results. I didn't finish it yet and will do so in the next session. There is another popular library called TextBlob that I also want to try.
