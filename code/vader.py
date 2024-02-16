@@ -10,7 +10,7 @@ file_path = '../data/reviews_raw.csv'
 df = pd.read_csv(file_path)
 print(df.shape)
 
-example = df["reviews"][50]
+example = df['reviews'][50]
 tokens = nltk.word_tokenize(example)
 tagged = nltk.pos_tag(tokens)
 # print(tokens)
