@@ -23,3 +23,8 @@ and then follow that up with some python sentiment analysis. I currently have ea
 **2/16/24**: I was able to complete the three pretrained models today. I created a random sample of 50 reviews in my script to get a sense of their performance. My takeaways are that TextBlob is fairly bad, VADER is fairly good, and RoBERTa is very good. I also added a file for links in the references folder to keep track of web sources without saving them as PDFs. The RoBERTa model was much better than the VADER and TextBlob models which is what I expected as it's much more advanced. There are many different models offered by HuggingFace, I might try some different ones that could be more applicable to this specific dataset. That script takes almost 10 minutes to go through all 4000+ reviews. My computer gets pretty hot while running it! The next step I want to take is to do some more in depth reading about these various
 models and how they work. I want to take notes and outline this in my paper draft. After that, I'll dig into how to label my own dataset and
 start labeling it.
+
+**2/17/24**: Today I started labeling my own dataset. I wrote a script that makes the labeling process a lot easier and a lot more fun. It
+allows me to label as many reviews as I want and then exit the program, picking back up where I left off the next time. It also lets me
+know how many reviews I labeled in a session and how long I spent on that session. I labeled a few hundred reviews today. Currently, I'm
+keep the labels basic with just positive, negative, and neutral.
