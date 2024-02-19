@@ -32,6 +32,7 @@ def label_reviews(csv_file_path):
 
                 os.system('clear')
                 print("Review:", rows[i][1])
+                print()
                 sentiment = input("Enter sentiment (pos, neg, neu): ").strip().lower()
 
                 if sentiment in ['q', 'quit']:

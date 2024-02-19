@@ -27,4 +27,7 @@ start labeling it.
 **2/17/24**: Today I started labeling my own dataset. I wrote a script that makes the labeling process a lot easier and a lot more fun. It
 allows me to label as many reviews as I want and then exit the program, picking back up where I left off the next time. It also lets me
 know how many reviews I labeled in a session and how long I spent on that session. I labeled a few hundred reviews today. Currently, I'm
-keep the labels basic with just positive, negative, and neutral.
+keeping the labels basic with just positive, negative, and neutral.
+
+**2/18/24**: Today I just sat down and labeled a bunch of reviews! This is gonna take a while...
+
