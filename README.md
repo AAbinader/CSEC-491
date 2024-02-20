@@ -31,3 +31,5 @@ keeping the labels basic with just positive, negative, and neutral.
 
 **2/18/24**: Today I just sat down and labeled a bunch of reviews! This is gonna take a while...
 
+**2/19/24**: I labeled a bunch more reviews today :)
+
