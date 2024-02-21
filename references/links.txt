@@ -17,3 +17,5 @@ https://www.youtube.com/watch?v=tXuvh5_Xyrw
 
 NLTK:
 https://www.nltk.org/howto/sentiment.html
+
+Quarto, Write up, RMarkdown

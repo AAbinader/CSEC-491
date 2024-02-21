@@ -7,5 +7,3 @@
 - **references**: a folder for any references used in the writeups or coding process
 - **writeups**: a folder for any written materials such as the proposal and final report
 
-
-
