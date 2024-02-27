@@ -3,10 +3,12 @@
 ### Repository Layout
 
 - **code**: a folder for any scripts written regarding NLP
-    - `evaluations.Rmd`: a file for evaluation model performance
+    - `evaluations.Rmd`: a file for evaluating model performance
     - `roberta.py`: a file for running the pretrained RoBERTa model
     - `tblob.py`: a file for running the rule based TextBlob model
     - `vader.py`: a file for running the rule based VADER model
+    - `svm.py`: a file for the support vector machine (SVM) model
+    - `random_forest.py`: a file for the random forest model
 - **data**: a folder for data files and any scripts written for data collection/cleaning
     - `courses.Rmd`: a file for narrowing down which courses we will scrape reviews for and analyzing other relevant information
     - `label.py`: a file to assist me in the manual labeling process

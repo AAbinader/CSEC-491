@@ -14,8 +14,14 @@ TextBlob Model:
 https://textblob.readthedocs.io/en/dev/
 https://towardsdatascience.com/my-absolute-go-to-for-sentiment-analysis-textblob-3ac3a11d524
 https://www.youtube.com/watch?v=tXuvh5_Xyrw
+https://github.com/sloria/TextBlob/blob/90cc87ab0f9e25f37379079840ec43aba59af440/textblob/en/sentiments.py
+https://github.com/clips/pattern/blob/d25511f9ca7ed9356b801d8663b8b5168464e68f/pattern/text/en/wordnet/__init__.py#L490
+https://stackoverflow.com/questions/43688542/textblob-sentiment-algorithm
+https://raw.githubusercontent.com/aesuli/SentiWordNet/master/data/SentiWordNet_3.0.0.txt
+
+Support Vector Machine:
+https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html
+https://medium.com/scrapehero/sentiment-analysis-using-svm-338d418e3ff1
 
 NLTK:
 https://www.nltk.org/howto/sentiment.html
-
-Quarto, Write up, RMarkdown

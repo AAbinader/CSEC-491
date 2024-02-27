@@ -1,7 +1,7 @@
 ---
-title: "CourseTable Data"
+title: "Model Evaluations"
 author: "Alexander Abinader"
-date: "2024-02-09"
+date: "2024-02-25"
 output:
   pdf_document: default
   html_document: default
@@ -11,194 +11,165 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-First we'll read in the data and just check the column names and dimensions to see if our CSV was written properly.
-
 ```{r}
 
-courses_raw <- read.csv("courses_raw.csv")
-dim(courses_raw)
-names(courses_raw)
+library(jsonlite)
 
 ```
 
-Now we'll do a quick check to make sure the query successfully only captured courses worth 1 credit.
+
+First, we'll read in the labeled training data. We'll also count how many of each sentiment there are (pos, neu, neg).
 
 ```{r}
 
-# Should be the same since the json query already had this condition
-courses_raw <- courses_raw[courses_raw$credits == 1.0, ]
-dim(courses_raw)
+# Read the labeled training data and count the frequency of each sentiment
+labeled_reviews <- read.csv("../data/reviews_labeled.csv")
+positives <- sum(labeled_reviews$sentiment == "pos")
+neutrals <- sum(labeled_reviews$sentiment == "neu")
+negatives <- sum(labeled_reviews$sentiment == "neg")
+
+print(sprintf("Positives Reviews: %d, Neutral Reviews: %d, Negative Reviews: %d, Total: %d"
+              , positives, neutrals, negatives, nrow(labeled_reviews)))
 
 ```
 
-We have a fair amount of data, so we'll remove any courses with NULL information as well as any course that doesn't
-satisfy at least one distributional area or skill requirement.
+We see that there are many more positive reviews than there are neutral or negative. This is not a dealbreaker but could
+certainly affect the interpretation of our results and the validity of our models. For example, we can just have a model
+that doesn't do anything and guesses "positive" every time. This would be over 70% accurate given the sheer number of
+positive reviews. We'll keep this in mind moving forward.
+
+Let's first assess the TextBlob model which I predict to be the worst one. We'll do some testing to find which cutoffs are the
+best for yielding good results. From the website, the sentiment feature of TextBlob returns a tuple with a polarity and subjectivity score. The polarity score lies in the interval [-1, 1] and the subjectivity score lies in the interval [0, 1]. 0 is more objective and 1 is more subjective. This is pretty much all the TextBlob website says so I did some additional digging on Stack Overflow and Github.
+
+It turns out if you toggle a parameter that it uses a Naive Bayes model trained on a dataset of movie reviews. As I mentioned, I wanted to test out just a simple rule-based model and did not use this feature. By default, it just averages the scores of each word in the string using a massive online database of hand-tagged adjectives. I linked that database in my references so I can look at it in more detail later on.
 
 ```{r}
 
-# Remove any courses with NULL values
-courses_raw <- courses_raw[complete.cases(courses_raw), ]
-dim(courses_raw)
-
-# Remove any courses without a distribution skill OR area
-courses_raw <- courses_raw[!(courses_raw$areas == "[]" & courses_raw$skills == "[]"), ]
-dim(courses_raw)
-
-```
-
-The code below is for removing duplicates. If a course is cross listed across several departments, CourseTable will
-display all of them as the their own row. The code below extracts just the first of these course codes and keeps that
-as the only version of that course in the dataset.
-
-```{r}
-
-# Go row by row to remove duplicate course codes, only keeping the first code
-courses_raw$code_check <- NA
-for (i in 1:nrow(courses_raw)) {
-    matches <- regexpr("(?<=')[^']+", courses_raw$all_course_codes[i], perl = TRUE)
-    courses_raw$code_check[i] <- regmatches(courses_raw$all_course_codes[i], matches)
-}
-courses_raw <- courses_raw[courses_raw$course_code == courses_raw$code_check, ]
-courses_clean <- courses_raw[ ,-ncol(courses_raw)]
+# https://textblob.readthedocs.io/en/dev/quickstart.html
+textblob <- read.csv("tblob.csv")
 
 ```
 
 ```{r}
 
-# Drop columns that are no longer necessary
-courses_clean <- subset(courses_clean, select = -c(all_course_codes, credits, school)
-)
+# Read the json format sentiment
+parsed_sentiment <- lapply(textblob$sentiment, function(cell) {
 
-```
-
-I wasn't sure how to uniquely identify courses before. I tried querying GraphQL with the course title (e.g. ECON 115) but
-that actually didn't work. I have a course number (crn) and course id. Below, I did a quick check to see if the number of
-unique values matches the number of courses in our dataset. It seems that they would both work for querying the reviews!
-
-```{r}
-
-# Check the number of unique course numbers and course ids to know if they can be used for querying the reviews
-length(unique(courses_clean$crn))
-length(unique(courses_clean$course_id))
-dim(courses_clean)
-
-```
-
-Now we can do some more traditional data cleaning. For potential analysis later in the project, we'll group the classes
-into one of three categories: STEM, Humanities, and Social Sciences. This may prove useful for analyzing differences in
-how students from different types of classes write their reviews.
-
-For simplicity, we'll remove the language classes (L1, L2, etc.) and any classes that are dual listed for a skill. There
-are only a few of these so they won't affect the results much but will make the cleaning and process easier.
-
-```{r}
-
-# Remove rows that have multiple skills or have a language skill
-courses_clean <- courses_clean[nchar(courses_clean$areas) < 8, ]
-courses_clean <- courses_clean[nchar(courses_clean$skills) < 8, ]
-courses_clean <- courses_clean[courses_clean$skills != "['L1']", ]
-courses_clean <- courses_clean[courses_clean$skills != "['L2']", ]
-courses_clean <- courses_clean[courses_clean$skills != "['L3']", ]
-courses_clean <- courses_clean[courses_clean$skills != "['L4']", ]
-courses_clean <- courses_clean[courses_clean$skills != "['L5']", ]
-
-# Relabel all the areas for readability
-for (i in 1:nrow(courses_clean)) {
-    clean_str <- gsub("\\[|\\]|'", "", courses_clean$areas[i])
-    if (courses_clean$areas[i] != "[]") {
-      courses_clean$areas[i] <- clean_str
-    }
-    else {
-      courses_clean$areas[i] <- NA
-    }
-}
-
-# Relabel all the skills for readability
-for (i in 1:nrow(courses_clean)) {
-    clean_str <- gsub("\\[|\\]|'", "", courses_clean$skills[i])
-    if (courses_clean$skills[i] != "[]") {
-      courses_clean$skills[i] <- clean_str
-    }
-    else {
-      courses_clean$skills[i] <- NA
-    }
-}
-
-# Combine areas and skills into a new column
-courses_clean$area_skill <- paste(courses_clean$areas, courses_clean$skills, sep = "/")
-print(unique(courses_clean$area_skill))
-
-```
-
-Great. We now have a new column with a skill and area concatenated together (e.g. So/QR). These can be
-grouped into the broader categories mentioned above.
-
-```{r}
-
-# Remove weird skill/area combo
-courses_clean <- courses_clean[courses_clean$area_skill != "Sc/WR", ]
-
-# Provide group labels for future analysis
-courses_clean$area <- NA
-for (i in 1:nrow(courses_clean)) {
-    code <- courses_clean$area_skill[i]
-    if ((code == "Hu/NA") || (code == "NA/WR") || (code == "Hu/WR")) {
-      courses_clean$area[i] <- "Humanities"
-    }
-    else if ((code == "Sc/NA") || (code == "NA/QR") || (code == "Sc/QR")) {
-      courses_clean$area[i] <- "STEM"
-    }
-    else {
-      courses_clean$area[i] <- "Social"
-    }
-}
-
-# Drop columns that are no longer necessary
-courses_clean <- subset(courses_clean, select = -c(area_skill, areas, skills))
-
-```
-
-Now we'll do some basic data cleaning such as checking our variable types, rounding, etc.
-
-```{r}
-
-# Check data frame structure
-str(courses_clean)
-head(courses_clean$professor_names, 20)
-
-```
-
-Everything appears fine. Let's clean up the professor names a little bit and round the ratings to three decimals.
-
-```{r}
-
-# Clean professor names
-courses_clean$professor_names <- sapply(courses_clean$professor_names, function(x) {
-  x <- gsub("\\[|\\]|'|\"", "", x)
+  json_val <- gsub("'", "\"", cell)
+  fromJSON(json_val)
+  
 })
 
-# Round ratings to three decimals
-courses_clean$average_rating <- round(courses_clean$average_rating, 3)
-courses_clean$average_professor <- round(courses_clean$average_professor, 3)
-courses_clean$average_workload <- round(courses_clean$average_workload, 3)
-courses_clean$average_rating_same_professors <- round(courses_clean$average_rating_same_professors, 3)
-courses_clean$average_workload_same_professors <- round(courses_clean$average_workload_same_professors, 3)
+# Extract polarity and subjectivity
+textblob$polarity <- sapply(parsed_sentiment, function(x) x$polarity)
+textblob$subjectivity <- sapply(parsed_sentiment, function(x) x$subjectivity)
 
 ```
 
-Great. This dataset is now cleaned and ready for potential future analysis. The important product of this file is that I now
-have a set of unique course ids and course numbers that I can use to query the GraphQL endpoint for reviews. I can also use
-these unique identifiers in order to automate the review collection and integration process.
+Now I'm going to calculate a sentiment score. I think the followin formula is a good start: $sentiment = polarity \times (1 - subjectivity)$. This makes sense because if the score is perfectly objective then we will use the polarity as is and if it the
+score is entirely subjective then it's basically a toss up bring the score to a neutral zero. I'll also just try using polarity straight up.
 
 ```{r}
 
-course_ids <- unique(courses_clean$course_id)
-course_numbers <- unique(courses_clean$crn)
-
-# Write these to a CSV file for my python script to access
-write.csv(course_ids, 'course_ids.csv', row.names = FALSE)
-write.csv(course_numbers, 'course_numbers.csv', row.names = FALSE)
+# Calculate a new sentiment score
+textblob$sentiment_score <- textblob$polarity # * (1 - textblob$subjectivity)
+boxplot(textblob$sentiment_score, ylab = "Sentiment Score", main = "Boxplot of Textblob Scores", col = "blue")
 
 ```
 
+```{r}
+
+textblob$label <- ifelse(textblob$sentiment_score < -0.05, "neg",
+                    ifelse(textblob$sentiment_score < 0.05, "neu", "pos"))
+
+textblob$true_label <- labeled_reviews$sentiment
+textblob$correct <- textblob$label == textblob$true_label
+accuracy_textblob <- (sum(textblob$correct) / length(textblob$correct)) * 100
+print(accuracy_textblob)
+
+```
+
+Using the the complex formula gave an accuracy of about 60% which is not very good. Using polarity straight up had
+an accuracy of about 65% which is a little bit better. Let's move on to VADER which I think will do a better job.
+
+```{r}
+
+vader <- read.csv("vader.csv")
+
+```
+
+VADER is fairly more complicated. It still uses a rule based approach but has a lot more steps and considerations. I skimmed
+through the source code on Github here: https://github.com/cjhutto/vaderSentiment/blob/master/vaderSentiment/vaderSentiment.py
+
+```{r}
+
+vader$sentiment_score <- sapply(vader$sentiment, function(x) {
+  
+  corrected_json <- gsub("'", "\"", x)
+  parsed <- fromJSON(corrected_json)
+  return(parsed$compound)
+  
+})
+
+boxplot(vader$sentiment_score, ylab = "Sentiment Score", main = "Boxplot of VADER Scores", col = "red")
+
+```
+
+```{r}
+
+vader$label <- ifelse(vader$sentiment_score < -0.05, "neg",
+                    ifelse(vader$sentiment_score < 0.05, "neu", "pos"))
+
+vader$true_label <- labeled_reviews$sentiment
+vader$correct <- vader$label == vader$true_label
+accuracy_vader <- (sum(vader$correct) / length(vader$correct)) * 100
+print(accuracy_vader)
+
+```
+
+Using cutoffs of -0.05 and 0.05 the VADER model achieved an accuracy of about 75%. That's pretty good! Now let's dig
+in to the RoBERTa model, which I anticipate will be the best of the pre built models. It uses deep learning (neural nets)
+and is pretrained on millions of tweets.
+
+```{r}
+
+roberta <- read.csv("roberta.csv")
+
+```
+
+RoBERTa outputs a list of probabilities [neg, neu, pos] for how the string belongs to each classification label. The
+most obvious approach would be to take the highest probability and assign that as the classification.
+
+```{r}
+
+convert_to_numeric_vector <- function(x) {
+  
+  nums <- gsub("\\[|\\]", "", x)
+  num_vec <- as.numeric(unlist(strsplit(nums, ",\\s*")))
+  return(num_vec)
+}
+
+roberta$sentiment <- lapply(roberta$sentiment, convert_to_numeric_vector)
+
+get_sentiment_label <- function(probabilities) {
+  
+  labels <- c("neg", "neu", "pos")
+  max_prob_index <- which.max(probabilities)
+  return(labels[max_prob_index])
+}
+
+roberta$label <- sapply(roberta$sentiment, get_sentiment_label)
+
+```
+
+```{r}
+
+roberta$true_label <- labeled_reviews$sentiment
+roberta$correct <- roberta$label == roberta$true_label
+accuracy_roberta <- (sum(roberta$correct) / length(roberta$correct)) * 100
+print(accuracy_roberta)
+
+```
+
+Finally, the RoBERTa model achieved roughly 77% accuracy. Pretty good!
 
