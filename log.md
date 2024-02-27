@@ -27,3 +27,12 @@ keeping the labels basic with just positive, negative, and neutral.
 **2/20/24**: More labeling!
 
 **2/21/24**: Labeling.
+
+**2/23/24**: Labeling.
+
+**2/24/24**: Labeling.
+
+**2/25/24**: I finished labeling my dataset and started to assess the accuracy of the pretained models!
+
+**2/26/24**: I finished assessing the accuracy of my pretrained models, created a guide to the file directory, and started
+working on the write up.
