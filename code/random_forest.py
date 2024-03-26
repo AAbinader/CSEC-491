@@ -1,53 +1,60 @@
+import time
 import gc
-import seaborn as sn
 import pandas as pd
 from sklearn.utils import shuffle
 from sklearn.feature_extraction.text import HashingVectorizer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import f1_score
-from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.metrics import classification_report
 from sklearn.metrics import accuracy_score
 from matplotlib import pyplot as plt
 
-# Random Forest
+"""Random Forest"""
 
-file_path = '../data/reviews_labeled.csv'
-df = pd.read_csv(file_path)
+# Function that runs the random forest model using the supplied data
+def random_forest_model(data, display_time=False, display_advanced=False):
 
-print("Shuffling")
+    start_time = time.time()
+    df = pd.read_csv(data)
+    df_shuffled = shuffle(df)
+    split_idx = int(len(df_shuffled) * 0.80)
 
-df_shuffled = shuffle(df)
-split_idx = int(len(df_shuffled) * 0.80)
+    df_train = df_shuffled[:split_idx]
+    df_test = df_shuffled[split_idx:]
 
-print("Performing Cross-Validation")
+    vectorizer = HashingVectorizer(lowercase=False, token_pattern=r'(?u)\b\w+\b|!')
 
-df_train = df_shuffled[:split_idx]
-df_test = df_shuffled[split_idx:]
+    train_matrix = vectorizer.transform(df_train['reviews'].values.astype('U'))
+    test_matrix = vectorizer.transform(df_test['reviews'].values.astype('U'))
 
-print("Vectorizing")
+    gc.collect()
+    clf = RandomForestClassifier()
+    rf = clf.fit(train_matrix, df_train['sentiment'])
 
-vectorizer = HashingVectorizer()
+    y_pred = rf.predict(test_matrix)
+    f1_score(y_pred, df_test.sentiment, average='weighted')
+    end_time = time.time()
 
-train_matrix = vectorizer.transform(df_train['reviews'].values.astype('U'))
-test_matrix = vectorizer.transform(df_test['reviews'].values.astype('U'))
+    if display_time:
+        total_time = end_time - start_time
+        print("RF Model Time: %fs" % (total_time))
 
-print("Creating Random Forest Model")
+    if display_advanced:
+        report = classification_report(df_test['sentiment'], y_pred)
+        print(report)
 
-gc.collect()
-clf = RandomForestClassifier()
-rf = clf.fit(train_matrix, df_train['sentiment'])
+    accuracy = accuracy_score(df_test['sentiment'], y_pred)
+    print("Accuracy: " + str(round(accuracy*100, 2)) + "%")
 
-y_pred = rf.predict(test_matrix)
-f1_score(y_pred, df_test.sentiment, average='weighted')
+# Random forest takes about 5 minutes to run
+    
+print("OG Data")
+random_forest_model('../data/reviews_labeled.csv', True, False)
 
-cm = confusion_matrix(df_test.sentiment, y_pred)
-print(cm)
+print()
+print("New Data (Short)")
+random_forest_model('../data/reviews_relabeled_short.csv', True, False)
 
-sn.heatmap(cm, annot=True, fmt='d')
-plt.xlabel('Predicted')
-plt.ylabel('Truth')
-
-accuracy = accuracy_score(df_test['sentiment'], y_pred)
-print("Accuracy: " + str(round(accuracy*100, 2)) + "%")
-
-# Roughly 74% accuracy. Takes around 10 minutes to run.
+print()
+print("New Data (Long)")
+random_forest_model('../data/reviews_relabeled.csv', True, False)

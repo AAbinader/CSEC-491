@@ -1,0 +1,29 @@
+OG Data
+Kernel: linear, Accuracy: 84.31%
+Kernel: rbf, Accuracy: 83.54%
+Kernel: sigmoid, Accuracy: 84.2%
+Kernel: poly2, Accuracy: 83.98%
+Kernel: poly3, Accuracy: 79.78%
+Kernel: poly4, Accuracy: 74.81%
+Kernel: poly5, Accuracy: 73.48%
+Kernel: poly6, Accuracy: 73.04%
+
+New Data (Short)
+Kernel: linear, Accuracy: 87.29%
+Kernel: rbf, Accuracy: 86.74%
+Kernel: sigmoid, Accuracy: 85.41%
+Kernel: poly2, Accuracy: 86.63%
+Kernel: poly3, Accuracy: 83.54%
+Kernel: poly4, Accuracy: 81.55%
+Kernel: poly5, Accuracy: 81.33%
+Kernel: poly6, Accuracy: 77.35%
+
+New Data (Long)
+Kernel: linear, Accuracy: 75.91%
+Kernel: rbf, Accuracy: 77.02%
+Kernel: sigmoid, Accuracy: 78.34%
+Kernel: poly2, Accuracy: 77.68%
+Kernel: poly3, Accuracy: 73.92%
+Kernel: poly4, Accuracy: 63.31%
+Kernel: poly5, Accuracy: 60.55%
+Kernel: poly6, Accuracy: 54.48%

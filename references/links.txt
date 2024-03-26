@@ -23,5 +23,17 @@ Support Vector Machine:
 https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html
 https://medium.com/scrapehero/sentiment-analysis-using-svm-338d418e3ff1
 
+Random Forest:
+https://mlarchive.com/machine-learning/sentiment-analysis-with-random-forest/
+
+Logistic Regression:
+https://towardsdatascience.com/sentiment-analysis-using-logistic-regression-and-naive-bayes-16b806eb4c4b
+https://makemeanalyst.com/sentiment-analysis-with-logistic-regression/
+
+Neural Networks:
+https://towardsdatascience.com/an-easy-tutorial-about-sentiment-analysis-with-deep-learning-and-keras-2bf52b9cba91
+https://www.analyticsvidhya.com/blog/2022/02/sentiment-analysis-with-nlp-deep-learning/
+https://stackoverflow.com/questions/71316443/google-colab-error-import-tensorflow-keras-models-could-not-be-resolvedrepor
+
 NLTK:
 https://www.nltk.org/howto/sentiment.html

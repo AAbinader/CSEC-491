@@ -36,3 +36,30 @@ keeping the labels basic with just positive, negative, and neutral.
 
 **2/26/24**: I finished assessing the accuracy of my pretrained models, created a guide to the file directory, and started
 working on the write up. I also worked on some new models. I completed an SVM model and started Naive Bayes.
+
+**2/29/24**: I tried some other kernels for the SVM model. They didn't achieve better accuracy than linear, however.
+
+**3/2/24**: Read some literature on general NLP.
+
+**3/4/24**: Read the SVM literature from the statistical methods textbook and took notes.
+
+**3/11/24**: Work on write up.
+
+**3/14/24**: Work on write up.
+
+**3/17/24**: Work on write up and start labeling new training data with different labels.
+
+**3/19/24**: New labeling.
+
+**3/20/24**: New labeling.
+
+**3/21/24**: New labeling.
+
+**3/22/24**: More labeling. Work on logit and neural net models.
+
+**3/23/24**: Finish new labeling and run all the previous models on the newly labeled data.
+
+**3/24/24**: Work on write up.
+
+**3/25/24**: Work on write up.
+

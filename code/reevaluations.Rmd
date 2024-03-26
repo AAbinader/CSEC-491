@@ -1,0 +1,60 @@
+---
+title: "Model Reevaluations"
+author: "Alexander Abinader"
+date: "2024-03-20"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, warning=FALSE}
+
+library(dplyr)
+
+```
+
+
+First, we'll read in the labeled training data. We'll also count how many of each sentiment there are (sr, r, neu, dr, sdr).
+
+```{r}
+
+# Read the labeled training data and count the frequency of each sentiment
+relabeled_reviews <- read.csv("../data/reviews_relabeled.csv")
+sr <- sum(relabeled_reviews$sentiment == "sr")
+r <- sum(relabeled_reviews$sentiment == "r")
+neu <- sum(relabeled_reviews$sentiment == "neu")
+dr <- sum(relabeled_reviews$sentiment == "dr")
+sdr <- sum(relabeled_reviews$sentiment == "sdr")
+
+print(sprintf("Strongly Recommend: %d, Recommend: %d, Neutral: %d, Don't Recommend: %d, Strongly Don't Recommend: %d, Total: %d", sr, r, neu, dr, sdr, nrow(relabeled_reviews)))
+
+```
+
+```{r}
+
+relabeled_short <- relabeled_reviews %>%
+  mutate(sentiment = case_when(
+    sentiment %in% c('sr', 'r') ~ 'r',
+    sentiment %in% c('dr', 'sdr') ~ 'dr',
+    TRUE ~ sentiment
+  ))
+
+recommend <- sum(relabeled_short$sentiment == "r")
+neutral <- sum(relabeled_short$sentiment == "neu")
+donot <- sum(relabeled_short$sentiment == "dr")
+
+print(sprintf("Recommend: %d, Neutral: %d, Don't Recommend: %d", recommend, neutral, donot))
+
+```
+
+```{r}
+
+write.csv(relabeled_short, '../data/reviews_relabeled_short.csv', row.names = FALSE)
+
+```
+
+Recommend makes up about 77% of the total reviews which is suboptimal but that's the reality of the data!

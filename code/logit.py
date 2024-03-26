@@ -1,21 +1,47 @@
 import time
 import pandas as pd
-from sklearn.utils import shuffle
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn import svm
-from sklearn.metrics import classification_report
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import accuracy_score, classification_report
 
-# Logistic Regression
+"""Logistic Regression"""
 
-file_path = '../data/reviews_labeled.csv'
-df = pd.read_csv(file_path)
+# Function that runs the logit model using the supplied data
+def logit_model(data, display_time=False, display_advanced=False):
 
-print("Shuffling")
+    start_time = time.time()
+    df = pd.read_csv(data)
+    x_train, x_test, y_train, y_test = train_test_split(df['reviews'], df['sentiment'], test_size=0.2)
 
-df_shuffled = shuffle(df)
-split_idx = int(len(df_shuffled) * 0.80)
+    pipeline = Pipeline([
+    ('vect', CountVectorizer(lowercase=False, token_pattern=r'(?u)\b\w+\b|!')),
+    ('tfidf', TfidfTransformer()),
+    ('clf', LogisticRegression(multi_class='multinomial', solver='lbfgs'))
+    ])
 
-print("Performing Cross-Validation")
+    pipeline.fit(x_train, y_train)
+    predictions = pipeline.predict(x_test)
+    end_time = time.time()
 
-df_train = df_shuffled[:split_idx]
-df_test = df_shuffled[split_idx:]
+    if display_time:
+        total_time = end_time - start_time
+        print("Logit Model Time: %fs" % (total_time))
+        print()
+
+    if display_advanced:
+        print("\nClassification Report:\n", classification_report(y_test, predictions))
+
+    print("Accuracy: " + str(round(accuracy_score(y_test, predictions) * 100, 2)) + "%")
+
+print("OG Data") 
+logit_model('../data/reviews_labeled.csv')
+
+print()
+print("New Data (Short)")
+logit_model('../data/reviews_relabeled_short.csv')
+
+print()
+print("New Data (Long)")
+logit_model('../data/reviews_relabeled.csv')

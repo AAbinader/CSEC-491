@@ -1,0 +1,11 @@
+OG Data
+RF Model Time: 258.121765s
+Accuracy: 74.36%
+
+New Data (Short)
+RF Model Time: 228.502020s
+Accuracy: 80.88%
+
+New Data (Long)
+RF Model Time: 392.522791s
+Accuracy: 66.3%

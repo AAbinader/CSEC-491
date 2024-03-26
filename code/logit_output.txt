@@ -1,0 +1,8 @@
+OG Data
+Accuracy: 83.09%
+
+New Data (Short)
+Accuracy: 85.52%
+
+New Data (Long)
+Accuracy: 75.14%

@@ -1,0 +1,50 @@
+
+GUIDELINES FOR LABELING
+
+The new labeling will use sentiment analysis but answer the questions "Recommend?" directly as opposed
+to giving the sentiment labels positive, negative, and neutral. 
+
+sr - strongly recommend
+
+A yes or equivalent followed by very positive explanation with words like "great", "excellent", etc.
+A capitalized YES or yes with an exclamation point!!
+A highly recommend, strongly recommend, absolutely, definitely, etc.
+Would recommend to every student
+Any sort of percentage (100%, 10000%)
+Best class at Yale or similar
+
+r - recommend
+
+A simple "yes" from the student with no explanation.
+Other one word responses such as a simple "good" with no explanation.
+A yes with some explanation that is not overwhelmingly positive.
+A yes "if you need" some requirement, distributional, etc.
+Would recommend to those in their major only or those who have a specific interest in that topic
+I would recommend with explanation or reservations
+Recommends as an easy class, gut, etc.
+
+neu - neutral
+
+Some positive and negative aspects to the review with no clear answer to the quesiton of recommendation.
+If ______, however not if ______
+N/A
+Major requirement only
+Maybe, perhaps, not sure, depends
+Only if they are ______
+Otherwise uncertain
+Probably
+
+dr - don't recommend
+
+Student is on the fence and says they would recommend other courses before this one.
+Simple "no" or "do not recommend"
+Probably not or similar
+Not unless _____
+Only take if you absolutely have to or similar
+
+sdr - strongly don't recommend
+
+Student says they do not recommend the course and gives several reasons why with little to no positive exceptions.
+A "no" with explanation and even more so when capitalized or using exclamation points!!
+Absolutely not or similar
+
