@@ -37,3 +37,8 @@ https://stackoverflow.com/questions/71316443/google-colab-error-import-tensorflo
 
 NLTK:
 https://www.nltk.org/howto/sentiment.html
+
+Keyword Extraction:
+https://www.analyticsvidhya.com/blog/2022/01/four-of-the-easiest-and-most-effective-methods-of-keyword-extraction-from-a-single-text-using-python/
+https://towardsdatascience.com/keyword-extraction-process-in-python-with-natural-language-processing-nlp-d769a9069d5c
+https://www.analyticsvidhya.com/blog/2022/03/keyword-extraction-methods-from-documents-in-nlp/
