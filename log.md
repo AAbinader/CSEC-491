@@ -63,3 +63,8 @@ working on the write up. I also worked on some new models. I completed an SVM mo
 
 **3/25/24**: Work on write up.
 
+**3/29/24**: Start implementing some basic keyword extraction.
+
+**3/30/24**: Start implementing the dashboard (proof of concept).
+
+**3/31/24**: Work on keyword extraction and dashboard.

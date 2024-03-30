@@ -42,3 +42,17 @@ Keyword Extraction:
 https://www.analyticsvidhya.com/blog/2022/01/four-of-the-easiest-and-most-effective-methods-of-keyword-extraction-from-a-single-text-using-python/
 https://towardsdatascience.com/keyword-extraction-process-in-python-with-natural-language-processing-nlp-d769a9069d5c
 https://www.analyticsvidhya.com/blog/2022/03/keyword-extraction-methods-from-documents-in-nlp/
+
+YAKE:
+https://github.com/LIAAD/yake
+
+RAKE:
+https://www.analyticsvidhya.com/blog/2021/10/rapid-keyword-extraction-rake-algorithm-in-natural-language-processing/
+https://pypi.org/project/rake-nltk/
+
+TextRank:
+https://www.analyticsvidhya.com/blog/2018/11/introduction-text-summarization-textrank-python/
+https://github.com/summanlp/textrank
+
+KeyBERT:
+https://maartengr.github.io/KeyBERT/
