@@ -37,13 +37,16 @@ def classify_reviews(reviews):
     data_path = '../data/reviews_relabeled.csv'
     svm_classifier, vectorizer = train_svm_model(data_path)
 
-    label_counts = {'sr': 0, 'r': 0, 'neu': 0, 'dr': 0, 'sdr': 0}
-    for review in reviews:
+    label_counts = {'SR': 0, 'R': 0, 'NEU': 0, 'DR': 0, 'SDR': 0}
+    total_reviews = len(reviews)  # Total number of reviews
 
-        label = classify_new_data(review, svm_classifier, vectorizer)
+    for review in reviews:
+        label = classify_new_data(review, svm_classifier, vectorizer).upper()
         if label in label_counts:
             label_counts[label] += 1
-        else:
-            label_counts[label] = 1
 
-    return label_counts
+    # Convert counts to percentages
+    label_percentages = {label: round((count / total_reviews) * 100, 1) for label, count in label_counts.items()}
+
+    return label_percentages
+

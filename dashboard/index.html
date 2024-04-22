@@ -21,7 +21,7 @@
     <form>
         <div class="form-group">
             <label for="courseName">Course Code</label>
-            <input type="text" class="form-control" id="courseName" placeholder="Enter course name" value="CPSC 201">
+            <input type="text" class="form-control" id="courseName" placeholder="Enter course name" value="CPSC 223">
             <div class="invalid-feedback">
                 Course name must be in the format: four letters, a space, and three digits (e.g., ABCD 123).
             </div>
@@ -48,7 +48,10 @@
         <br>
         <br>
         <h6>Recommend?</h6>
-        <ol id="recommendList"></ol>
+        <br>
+
+        <div id="bars"></div>
+
         <div class="review-container">
             <div class="review-category">
                 <h6>Skills</h6>
@@ -144,7 +147,10 @@ function handleResponse(data) {
     console.log(data);
     $('#responseMessage').text(`Response from server: ${data.message}`);
 
-    if (data.recommend) updateProportions($('#recommendList'), data.recommend);
+    document.querySelectorAll('h6').forEach(h6 => {
+                h6.style.display = 'block'; // Adjust as needed for your layout
+            });
+    if (data.proportions) displayBarChart(data.proportions);
     if (data.skills) updateList($('#skillsList'), data.skills);
     if (data.strengths) updateList($('#strengthsList'), data.strengths);
     if (data.weaknesses) updateList($('#weaknessesList'), data.weaknesses);
@@ -161,11 +167,48 @@ function updateList(list, items) {
     items.forEach(item => list.append(`<li>${item}</li>`));
 }
 
-function updateProportions(list, proportions) {
-    list.empty();
-    Object.keys(proportions).forEach(key => list.append(`<li>${key}: ${proportions[key]}</li>`));
-}
+function displayBarChart(proportions) {
+    const container = document.getElementById('bars');
+    if (!container) {
+        console.error('Container for bars not found');
+        return; // Stop the function if container is not found
+    }
 
+    container.innerHTML = '';
+    const sortOrder = ['SR', 'R', 'NEU', 'DR', 'SDR'];
+
+
+    Object.keys(proportions)
+        .sort((a, b) => sortOrder.indexOf(a) - sortOrder.indexOf(b))
+        .forEach(key => {
+        // Create the bar container
+        const barContainer = document.createElement('div');
+        barContainer.className = 'bar-container';
+        barContainer.style.width = '100%';  // Ensure the container spans the full width
+
+        // Create the label for the category
+        const label = document.createElement('div');
+        label.className = 'bar-label';
+        label.textContent = key;
+
+        // Create the bar itself
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        const percentage = proportions[key];
+        bar.style.width = percentage + '%';  // Set the width of the bar based on the percentage
+
+        // Create the percentage label
+        const percentageLabel = document.createElement('div');
+        percentageLabel.className = 'percentage-label';
+        percentageLabel.textContent = percentage + '%';
+        percentageLabel.style.color = 'black';
+
+        barContainer.appendChild(label);
+        barContainer.appendChild(bar);
+        barContainer.appendChild(percentageLabel); // Append outside the bar
+        container.appendChild(barContainer);
+    });
+}
 </script>
 </body>
 </html>

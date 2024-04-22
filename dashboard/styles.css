@@ -37,3 +37,37 @@
     white-space: normal; /* Ensure text wraps */
     overflow-wrap: break-word; /* Helps ensure long words do not stretch the container */
 }
+
+.bar-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.bar-label {
+    width: 50px; /* Adjust this width based on your longest label */
+    flex-shrink: 0; /* Prevents the label from shrinking */
+    text-align: right; /* Aligns the text to the right */
+    margin-right: 10px; /* Adds some space between label and bar */
+    font-size: 13px;
+}
+
+.percentage-label {
+    margin-right: 10px;
+    margin-left: 5px;
+    font-size: 13px;
+}
+
+.bar {
+    height: 22px;
+    background-color: #0ba6ff;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h6 {
+    display: none;
+}
+
