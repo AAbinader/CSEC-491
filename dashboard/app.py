@@ -1,7 +1,13 @@
 import requests
 import json
+import re
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+
+# Imports from other files
+from sentiment import classify_reviews
+from keyword_ext import extract_skills
+from keyword_ext import extract_swi
 
 app = Flask(__name__)
 CORS(app)
@@ -26,12 +32,31 @@ def submit_course_info():
     
     skills = get_course_reviews(course_id, "YC401")
     if skills == -1:
-        return sonify({"message": "Unable to process course information."}), 200
+        return jsonify({"message": "Unable to process course information."}), 200
     
-    print(reviews)
-    print(skills)
+    swi = get_course_reviews(course_id, "YC403")
+    if swi == -1:
+        return jsonify({"message": "Unable to process course information."}), 200
+    
+    # reviews, skills, swi
+    recommend = get_proportions(reviews)
+    skills = extract_skills(skills)
+    strengths, weaknesses, improvements = extract_swi(swi)
+    
+    return jsonify({
+        "message": "Course information submitted successfully",
+        "proportions": recommend,
+        "skills": skills,
+        "strengths": strengths,
+        "weaknesses": weaknesses,
+        "improvements": improvements
+    }), 200
 
-    return jsonify({"message": "Course information submitted successfully"}), 200
+# Function to get sentiment analysis labels
+def get_proportions(reviews):
+
+    proportions = classify_reviews(reviews)
+    return proportions
 
 # Function to retrive a course id given the season code and course name
 def get_course_id(course_name, season_code):
@@ -117,6 +142,7 @@ def get_course_reviews(course_id, question_code):
             print("No course reviews.")
             return -1
 
+        reviews = [review['comment'] for review in reviews]
         return reviews
 
     else:
@@ -125,3 +151,5 @@ def get_course_reviews(course_id, question_code):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# API Key: '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'

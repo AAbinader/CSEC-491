@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Dashboard</title>
@@ -20,7 +21,7 @@
     <form>
         <div class="form-group">
             <label for="courseName">Course Code</label>
-            <input type="text" class="form-control" id="courseName" placeholder="Enter course name">
+            <input type="text" class="form-control" id="courseName" placeholder="Enter course name" value="CPSC 201">
             <div class="invalid-feedback">
                 Course name must be in the format: four letters, a space, and three digits (e.g., ABCD 123).
             </div>
@@ -30,7 +31,7 @@
             <select class="form-control" id="seasonSelect">
                 <option>Summer</option>
                 <option>Spring</option>
-                <option>Fall</option>
+                <option value="Fall" selected>Fall</option>
             </select>
         </div>
         <div class="form-group">
@@ -39,6 +40,32 @@
             </select>
         </div>
         <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
+        <div class="progress" style="margin-top: 20px; display: none;" id="loadingBar">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            </div>
+        </div>
+        <br>
+        <br>
+        <h6>Recommend?</h6>
+        <ol id="recommendList"></ol>
+        <div class="review-container">
+            <div class="review-category">
+                <h6>Skills</h6>
+                <ol id="skillsList"></ol>
+            </div>
+            <div class="review-category">
+                <h6>Strengths</h6>
+                <ol id="strengthsList"></ol>
+            </div>
+            <div class="review-category">
+                <h6>Weaknesses</h6>
+                <ol id="weaknessesList"></ol>
+            </div>
+            <div class="review-category">
+                <h6>Improvements</h6>
+                <ol id="improvementsList"></ol>
+            </div>
     </form>
 </div>
 
@@ -52,72 +79,94 @@
         for (let year = 2012; year <= 2023; year++) {
             yearSelect.append(`<option>${year}</option>`);
         }
+        
+        const year = document.getElementById('yearSelect');
+        year.value = 2023;
     });
 
-    function submitForm() {
+    async function submitForm() {
+    if (!validateForm()) return;  // Validate the form and exit if invalid
+
+    // Show loading bar
+    $('#loadingBar').show();
+
+    try {
+        const data = {
+            courseName: $('#courseName').val(),
+            season: $('#seasonSelect').val(),
+            year: $('#yearSelect').val(),
+        };
+
+        const response = await fetch('http://localhost:5000/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        handleResponse(result);
+    } catch (error) {
+        handleError(error);
+    } finally {
+        $('#loadingBar').hide();
+    }
+}
+
+function validateForm() {
     const courseNameInput = $('#courseName');
     const seasonSelect = $('#seasonSelect');
     const yearSelect = $('#yearSelect');
-
-    const courseName = courseNameInput.val();
-    const season = seasonSelect.val();
-    const year = yearSelect.val();
-    
-    // Regular expression to validate the course name
-    const courseNameRegex = /^[A-Za-z]{4} \d{3}$/;
+    const courseNameRegex = /^[A-Za-z&]{4} \d{3}$/;
     let isValid = true;
 
     // Reset validation state
-    courseNameInput.removeClass('is-invalid');
-    seasonSelect.removeClass('is-invalid');
-    yearSelect.removeClass('is-invalid');
+    $('.is-invalid').removeClass('is-invalid');
 
-    // Validate Course Name
-    if (!courseNameRegex.test(courseName)) {
+    if (!courseNameRegex.test(courseNameInput.val())) {
         courseNameInput.addClass('is-invalid');
         isValid = false;
     }
-    
-    // Validate Season
-    if (!season) {
+
+    if (!seasonSelect.val()) {
         seasonSelect.addClass('is-invalid');
         isValid = false;
     }
-    
-    // Validate Year
-    if (!year) {
+
+    if (!yearSelect.val()) {
         yearSelect.addClass('is-invalid');
         isValid = false;
     }
-    
-    // Stop the function if validation fails
-    if (!isValid) return;
 
-    // If validation passed, proceed with the fetch request
-    const data = {
-        courseName: courseName,
-        season: season,
-        year: year,
-    };
-
-    fetch('http://localhost:5000/submit', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        alert(`Response from server: ${data.message}`); // REPLACE with LOADING BAR
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+    return isValid;
 }
 
+function handleResponse(data) {
+    console.log(data);
+    $('#responseMessage').text(`Response from server: ${data.message}`);
+
+    if (data.recommend) updateProportions($('#recommendList'), data.recommend);
+    if (data.skills) updateList($('#skillsList'), data.skills);
+    if (data.strengths) updateList($('#strengthsList'), data.strengths);
+    if (data.weaknesses) updateList($('#weaknessesList'), data.weaknesses);
+    if (data.improvements) updateList($('#improvementsList'), data.improvements);
+}
+
+function handleError(error) {
+    console.error('Error:', error);
+    $('#responseMessage').text('Error processing your request.');
+}
+
+function updateList(list, items) {
+    list.empty();
+    items.forEach(item => list.append(`<li>${item}</li>`));
+}
+
+function updateProportions(list, proportions) {
+    list.empty();
+    Object.keys(proportions).forEach(key => list.append(`<li>${key}: ${proportions[key]}</li>`));
+}
 
 </script>
 </body>
 </html>
+
