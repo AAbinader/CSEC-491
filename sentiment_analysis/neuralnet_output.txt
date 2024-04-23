@@ -1,8 +1,8 @@
-OG Data
-Accuracy: 83.65%
+OG Data: 
+{'Time': 63.411343812942505, 'Accuracy': 0.7955801104972375, 'Precision': 0.8021149986884533, 'Recall': 0.7955801104972375, 'F1-Score': 0.7985983486674095}
 
-New Data (Short)
-Accuracy: 85.52%
+Short Data: 
+{'Time': 56.63266682624817, 'Accuracy': 0.8165745856353591, 'Precision': 0.8487508379101358, 'Recall': 0.8165745856353591, 'F1-Score': 0.8278631284260388}
 
-New Data (Long)
-Accuracy: 73.81%
+Long Data: 
+{'Time': 84.03197407722473, 'Accuracy': 0.7701657458563536, 'Precision': 0.7705164624469276, 'Recall': 0.7701657458563536, 'F1-Score': 0.7685736116037476}

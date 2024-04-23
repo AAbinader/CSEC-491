@@ -70,3 +70,21 @@ working on the write up. I also worked on some new models. I completed an SVM mo
 **3/31/24**: Work on keyword extraction and dashboard.
 
 **4/1/24**: Work on dashboard and write up.
+
+**4/4/24**: Work on write up.
+
+**4/5/24**: Work on write up.
+
+**4/6/24**: Work on write up.
+
+**4/7/24**: Work on dashboard.
+
+**4/8/24**: Work on write up.
+
+**4/12/24**: Work on coding new results.
+
+**4/13/24**: Work on write up.
+
+**4/14/24**: Work on ChatGPT API call. Spent $5 on API credits.
+
+**4/15/24**: Work on write up.

@@ -66,7 +66,7 @@ textblob$subjectivity <- sapply(parsed_sentiment, function(x) x$subjectivity)
 
 ```
 
-Now I'm going to calculate a sentiment score. I think the followin formula is a good start: $sentiment = polarity \times (1 - subjectivity)$. This makes sense because if the score is perfectly objective then we will use the polarity as is and if it the
+Now I'm going to calculate a sentiment score. I think the following formula is a good start: $sentiment = polarity \times (1 - subjectivity)$. This makes sense because if the score is perfectly objective then we will use the polarity as is and if it the
 score is entirely subjective then it's basically a toss up bring the score to a neutral zero. I'll also just try using polarity straight up.
 
 ```{r}

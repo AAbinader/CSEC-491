@@ -201,4 +201,20 @@ write.csv(course_numbers, 'course_numbers.csv', row.names = FALSE)
 
 ```
 
+```{r}
+
+stem_courses <- subset(courses_clean, courses_clean$area == "STEM")
+stem_course_ids <- unique(stem_courses$course_id)
+
+social_courses <- subset(courses_clean, courses_clean$area == "Social")
+social_course_ids <- unique(social_courses$course_id)
+
+humanities_courses <- subset(courses_clean, courses_clean$area == "Humanities")
+humanities_course_ids <- unique(humanities_courses$course_id)
+
+write.csv(stem_course_ids, 'stem_course_ids.csv', row.names = FALSE)
+write.csv(social_course_ids, 'social_course_ids.csv', row.names = FALSE)
+write.csv(humanities_course_ids, 'humanities_course_ids.csv', row.names = FALSE)
+
+```
 

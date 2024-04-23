@@ -5,63 +5,47 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import svm
 from sklearn.metrics import classification_report
 
-"""Support Vector Machine"""
-
 # Function that takes a dataframe and splits it into training and testing data
 def cross_validation(file_path):
-
     df = pd.read_csv(file_path)
-
+    df = df.dropna()
     df_shuffled = shuffle(df)
     split_idx = int(len(df_shuffled) * 0.80)
-
     df_train = df_shuffled[:split_idx]
     df_test = df_shuffled[split_idx:]
-
     return df_train, df_test
 
-# Function that runs the svm model using the supplied data and kernel
-def svm_model(data, kernel, degree=None, display_time=False, display_advanced=False):
-
+# Function that runs the SVM model using the supplied data and kernel
+def svm_model(data, kernel, degree=None, display_time=False):
     df_train, df_test = cross_validation(data)
-    vectorizer = TfidfVectorizer(min_df = 1,
-                                max_df = 0.6,
-                                sublinear_tf = True,
-                                use_idf = False,
-                                lowercase=False,
-                                token_pattern=r'(?u)\b\w+\b|!')
+    vectorizer = TfidfVectorizer(min_df=1, max_df=0.6, sublinear_tf=True, use_idf=False, lowercase=False, token_pattern=r'(?u)\b\w+\b|!')
     train_vec = vectorizer.fit_transform(df_train['reviews'])
     test_vec = vectorizer.transform(df_test['reviews'])
 
     if degree is None:
-        classifier_linear = svm.SVC(kernel=kernel)
+        classifier = svm.SVC(kernel=kernel)
     else:
-        classifier_linear = svm.SVC(kernel=kernel, degree=degree)
-
+        classifier = svm.SVC(kernel=kernel, degree=degree)
 
     t0 = time.time()
-    classifier_linear.fit(train_vec, df_train['sentiment'])
+    classifier.fit(train_vec, df_train['sentiment'])
     t1 = time.time()
-    prediction_linear = classifier_linear.predict(test_vec)
+    prediction = classifier.predict(test_vec)
     t2 = time.time()
-    time_linear_train = t1 - t0
-    time_linear_predict = t2 - t1
+    time_train = t1 - t0
+    time_predict = t2 - t1
 
     if display_time:
-        print("Training time: %fs; Prediction time: %fs" % (time_linear_train, time_linear_predict))
-        print()
+        print("Training time: {:.2f}s; Prediction time: {:.2f}s".format(time_train, time_predict))
 
-    report = classification_report(df_test['sentiment'], prediction_linear, output_dict=True, zero_division=1)
+    report = classification_report(df_test['sentiment'], prediction, output_dict=True, zero_division=1)
+    accuracy = report['accuracy'] * 100
+    weighted_avg = report['weighted avg']
+    print("Training time: {:.2f}s; Prediction time: {:.2f}s".format(time_train, time_predict))
+    print(f"Kernel: {kernel}, Accuracy: {accuracy:.3f}%, Precision: {weighted_avg['precision']:.3f}, Recall: {weighted_avg['recall']:.3f}, F1-Score: {weighted_avg['f1-score']:.3f}")
 
-    if display_advanced:
-        print(report)
-        print()
-
-    if degree == None:
-        degree = ''
-
-    print("Kernel: " + str(kernel) + str(degree) + ", Accuracy: " + str(round(report['accuracy'] * 100, 2)) + "%")
-
+    print()
+    
 print("OG Data")
 svm_model('../data/reviews_labeled.csv', 'linear')
 svm_model('../data/reviews_labeled.csv', 'rbf')

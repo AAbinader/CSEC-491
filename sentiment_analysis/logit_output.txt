@@ -1,8 +1,62 @@
 OG Data
-Accuracy: 83.09%
+Logit Model Time: 0.542139s
+
+
+Classification Report:
+               precision    recall  f1-score   support
+
+         neg       0.92      0.51      0.65        93
+         neu       0.66      0.52      0.58       157
+         pos       0.86      0.96      0.91       655
+
+    accuracy                           0.84       905
+   macro avg       0.81      0.66      0.71       905
+weighted avg       0.83      0.84      0.83       905
+
+Weighted Precision: 83.47%
+Weighted Recall: 83.98%
+Weighted F1 Score: 82.75%
+Accuracy: 83.98%
 
 New Data (Short)
-Accuracy: 85.52%
+Logit Model Time: 0.543782s
+
+
+Classification Report:
+               precision    recall  f1-score   support
+
+          dr       0.90      0.54      0.67        84
+         neu       0.67      0.25      0.36       116
+           r       0.86      0.99      0.92       705
+
+    accuracy                           0.85       905
+   macro avg       0.81      0.59      0.65       905
+weighted avg       0.84      0.85      0.83       905
+
+Weighted Precision: 83.96%
+Weighted Recall: 85.30%
+Weighted F1 Score: 82.60%
+Accuracy: 85.3%
 
 New Data (Long)
+Logit Model Time: 0.753556s
+
+
+Classification Report:
+               precision    recall  f1-score   support
+
+          dr       0.86      0.49      0.63        75
+         nan       0.00      0.00      0.00         1
+         neu       0.56      0.46      0.51       110
+           r       0.74      0.90      0.81       446
+         sdr       0.00      0.00      0.00        14
+          sr       0.84      0.73      0.78       259
+
+    accuracy                           0.75       905
+   macro avg       0.50      0.43      0.45       905
+weighted avg       0.74      0.75      0.74       905
+
+Weighted Precision: 74.35%
+Weighted Recall: 75.14%
+Weighted F1 Score: 73.77%
 Accuracy: 75.14%

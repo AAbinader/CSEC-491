@@ -1,29 +1,77 @@
 OG Data
-Kernel: linear, Accuracy: 84.31%
-Kernel: rbf, Accuracy: 83.54%
-Kernel: sigmoid, Accuracy: 84.2%
-Kernel: poly2, Accuracy: 83.98%
-Kernel: poly3, Accuracy: 79.78%
-Kernel: poly4, Accuracy: 74.81%
-Kernel: poly5, Accuracy: 73.48%
-Kernel: poly6, Accuracy: 73.04%
+Training time: 1.66s; Prediction time: 0.35s
+Kernel: linear, Accuracy: 85.967%, Precision: 0.851, Recall: 0.860, F1-Score: 0.850
+
+Training time: 2.12s; Prediction time: 0.39s
+Kernel: rbf, Accuracy: 83.757%, Precision: 0.829, Recall: 0.838, F1-Score: 0.824
+
+Training time: 1.48s; Prediction time: 0.29s
+Kernel: sigmoid, Accuracy: 83.315%, Precision: 0.833, Recall: 0.833, F1-Score: 0.828
+
+Training time: 2.10s; Prediction time: 0.41s
+Kernel: poly, Accuracy: 82.873%, Precision: 0.817, Recall: 0.829, F1-Score: 0.817
+
+Training time: 3.31s; Prediction time: 0.47s
+Kernel: poly, Accuracy: 80.773%, Precision: 0.786, Recall: 0.808, F1-Score: 0.781
+
+Training time: 3.84s; Prediction time: 0.53s
+Kernel: poly, Accuracy: 76.575%, Precision: 0.761, Recall: 0.766, F1-Score: 0.699
+
+Training time: 3.89s; Prediction time: 0.59s
+Kernel: poly, Accuracy: 75.028%, Precision: 0.774, Recall: 0.750, F1-Score: 0.663
+
+Training time: 3.96s; Prediction time: 0.59s
+Kernel: poly, Accuracy: 75.470%, Precision: 0.796, Recall: 0.755, F1-Score: 0.660
+
 
 New Data (Short)
-Kernel: linear, Accuracy: 87.29%
-Kernel: rbf, Accuracy: 86.74%
-Kernel: sigmoid, Accuracy: 85.41%
-Kernel: poly2, Accuracy: 86.63%
-Kernel: poly3, Accuracy: 83.54%
-Kernel: poly4, Accuracy: 81.55%
-Kernel: poly5, Accuracy: 81.33%
-Kernel: poly6, Accuracy: 77.35%
+Training time: 1.38s; Prediction time: 0.26s
+Kernel: linear, Accuracy: 87.072%, Precision: 0.859, Recall: 0.871, F1-Score: 0.859
+
+Training time: 1.89s; Prediction time: 0.34s
+Kernel: rbf, Accuracy: 84.530%, Precision: 0.836, Recall: 0.845, F1-Score: 0.819
+
+Training time: 1.33s; Prediction time: 0.26s
+Kernel: sigmoid, Accuracy: 88.398%, Precision: 0.875, Recall: 0.884, F1-Score: 0.870
+
+Training time: 1.97s; Prediction time: 0.35s
+Kernel: poly, Accuracy: 85.414%, Precision: 0.849, Recall: 0.854, F1-Score: 0.832
+
+Training time: 3.00s; Prediction time: 0.52s
+Kernel: poly, Accuracy: 83.425%, Precision: 0.832, Recall: 0.834, F1-Score: 0.797
+
+Training time: 3.92s; Prediction time: 0.53s
+Kernel: poly, Accuracy: 79.006%, Precision: 0.791, Recall: 0.790, F1-Score: 0.722
+
+Training time: 4.31s; Prediction time: 0.61s
+Kernel: poly, Accuracy: 78.122%, Precision: 0.801, Recall: 0.781, F1-Score: 0.700
+
+Training time: 4.22s; Prediction time: 0.60s
+Kernel: poly, Accuracy: 78.674%, Precision: 0.801, Recall: 0.787, F1-Score: 0.700
+
 
 New Data (Long)
-Kernel: linear, Accuracy: 75.91%
-Kernel: rbf, Accuracy: 77.02%
-Kernel: sigmoid, Accuracy: 78.34%
-Kernel: poly2, Accuracy: 77.68%
-Kernel: poly3, Accuracy: 73.92%
-Kernel: poly4, Accuracy: 63.31%
-Kernel: poly5, Accuracy: 60.55%
-Kernel: poly6, Accuracy: 54.48%
+Training time: 2.28s; Prediction time: 0.48s
+Kernel: linear, Accuracy: 78.785%, Precision: 0.795, Recall: 0.788, F1-Score: 0.776
+
+Training time: 3.43s; Prediction time: 0.54s
+Kernel: rbf, Accuracy: 78.232%, Precision: 0.788, Recall: 0.782, F1-Score: 0.764
+
+Training time: 2.22s; Prediction time: 0.46s
+Kernel: sigmoid, Accuracy: 74.586%, Precision: 0.751, Recall: 0.746, F1-Score: 0.739
+
+Training time: 3.79s; Prediction time: 0.69s
+Kernel: poly, Accuracy: 80.331%, Precision: 0.809, Recall: 0.803, F1-Score: 0.794
+
+Training time: 4.68s; Prediction time: 0.67s
+Kernel: poly, Accuracy: 70.276%, Precision: 0.731, Recall: 0.703, F1-Score: 0.666
+
+Training time: 5.07s; Prediction time: 0.61s
+Kernel: poly, Accuracy: 64.309%, Precision: 0.700, Recall: 0.643, F1-Score: 0.577
+
+Training time: 5.20s; Prediction time: 0.60s
+Kernel: poly, Accuracy: 63.094%, Precision: 0.718, Recall: 0.631, F1-Score: 0.559
+
+Training time: 5.27s; Prediction time: 0.61s
+Kernel: poly, Accuracy: 53.923%, Precision: 0.729, Recall: 0.539, F1-Score: 0.439
+
