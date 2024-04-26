@@ -88,3 +88,9 @@ working on the write up. I also worked on some new models. I completed an SVM mo
 **4/14/24**: Work on ChatGPT API call. Spent $5 on API credits.
 
 **4/15/24**: Work on write up.
+
+**4/18/24**: Work on write up.
+
+**4/21/24**: Finish ChatGPT API.
+
+**4/22/4**: Finish dashboard and more SVM analysis.
