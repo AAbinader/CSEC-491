@@ -1,0 +1,21 @@
+STEM Short
+Kernel: linear, Accuracy: 84.725%, Precision: 0.833, Recall: 0.847, F1-Score: 0.827
+
+Social Short
+Kernel: linear, Accuracy: 89.683%, Precision: 0.908, Recall: 0.897, F1-Score: 0.879
+
+Humanities Short
+Kernel: linear, Accuracy: 92.025%, Precision: 0.927, Recall: 0.920, F1-Score: 0.891
+
+
+*******************************************************
+
+STEM Long
+Kernel: linear, Accuracy: 75.764%, Precision: 0.758, Recall: 0.758, F1-Score: 0.743
+
+Social Long
+Kernel: linear, Accuracy: 72.222%, Precision: 0.735, Recall: 0.722, F1-Score: 0.706
+
+Humanities Long
+Kernel: linear, Accuracy: 71.779%, Precision: 0.752, Recall: 0.718, F1-Score: 0.671
+

@@ -64,6 +64,8 @@ stem_df = df[df['course_id'].isin(stem_course_ids)]
 social_df = df[df['course_id'].isin(social_course_ids)]
 humanities_df = df[df['course_id'].isin(humanities_course_ids)]
 
+print(len(stem_df), len(social_df), len(humanities_df))
+
 print("STEM Short")
 svm_model(stem_df, 'linear')
 print()
